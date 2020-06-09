@@ -29,43 +29,45 @@ namespace RCMod
             {
                 case "p": //control pilot
                     {
-                        int IsPlayerPilot = PLNetworkManager.Instance.LocalPlayer.GetClassID();
-                        int IsPlayerHost = PLNetworkManager.Instance.LocalPlayer.GetPlayerID();
-                        if (IsPlayerPilot == 3)
-                            if (IsPlayerHost != 0)
-                                Commands.HelmControl();
-                            else
-                                Commands.Traitor();
+                        bool IsPlayerPilot = (PLNetworkManager.Instance.LocalPlayer.GetClassID() == 1);
+                        bool IsPlayerHost = PhotonNetwork.isMasterClient;
+                        if (IsPlayerPilot && IsPlayerHost)
+                        {
+                            Commands.HelmControl();
+                        }
+                        else
+                        {
+                            Commands.Traitor();
+                        }
                     }
-                    //IsPlayerPilot = PLNetworkManager.Instance.LocalPlayerID = 1;
-                    //Commands.HelmControl();
+
                     break;
 
                 case "w": //control mainturret
                     {
-                        int IsPlayerGunner = PLNetworkManager.Instance.LocalPlayer.GetClassID();
-                        int IsPlayerHost = PLNetworkManager.Instance.LocalPlayer.GetPlayerID();
-                        if (IsPlayerGunner == 3)
-                            if (IsPlayerHost != 0)
-                                Commands.WeaponsControl();
-                            else
-                                Commands.Traitor();
+                        bool IsPlayerGunner = (PLNetworkManager.Instance.LocalPlayer.GetClassID() == 3);
+                        bool IsPlayerHost = PhotonNetwork.isMasterClient;
+                        if (IsPlayerGunner && IsPlayerHost)
+                        {
+                            Commands.WeaponsControl();
+                        }
+                        else
+                        {
+                            Commands.Traitor();
+                        }
                     }
                     break;
+
                 case "s":
                 case "sd":
                     {
-                        int IsPlayerScientist = PLNetworkManager.Instance.LocalPlayer.GetClassID();
-                        int IsPlayerHost = PLNetworkManager.Instance.LocalPlayer.GetPlayerID();
-                        if (IsPlayerHost == 0)
+                        bool IsPlayerScientist = (PLNetworkManager.Instance.LocalPlayer.GetClassID() == 2);
+                        bool IsPlayerHost = (PhotonNetwork.isMasterClient);
+                        if (IsPlayerHost || IsPlayerScientist)
                         {
                             Commands.SensorControl();
                         }
-                        else if (IsPlayerScientist == 4)
-                        {
-                            Commands.SensorControl();
-                        }
-                        else if (IsPlayerScientist != 4)
+                        else
                         {
                             Commands.Traitor();
                         }
